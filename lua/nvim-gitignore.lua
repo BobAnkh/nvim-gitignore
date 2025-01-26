@@ -13,11 +13,11 @@ local function open_window()
   buf = api.nvim_create_buf(false, true)
   local border_buf = api.nvim_create_buf(false, true)
 
-  api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
-  api.nvim_buf_set_option(buf, 'filetype', 'bufferlist')
+  api.nvim_set_option_value('bufhidden', 'wipe', { buf = buf })
+  api.nvim_set_option_value('filetype', 'bufferlist', { buf = buf })
 
-  local width = api.nvim_get_option("columns")
-  local height = api.nvim_get_option("lines")
+  local width = api.nvim_get_option_value('columns', {})
+  local height = api.nvim_get_option_value('lines', {})
 
   local win_height = math.ceil(height * 0.5 - 4)
   local win_width = math.ceil(width * 0.4)
@@ -55,7 +55,7 @@ local function open_window()
   win = api.nvim_open_win(buf, true, opts)
   api.nvim_command('au BufWipeout <buffer> exe "silent bwipeout! "' .. border_buf)
 
-  api.nvim_win_set_option(win, 'cursorline', true)
+  api.nvim_set_option_value('cursorline', true, { win = win })
 end
 
 local function close_window()
@@ -81,7 +81,7 @@ local function get_gitignore_templates()
 end
 
 local function update_window()
-  api.nvim_buf_set_option(buf, 'modifiable', true)
+  api.nvim_set_option_value('modifiable', true, { buf = buf })
 
   local list = get_gitignore_templates()
 
@@ -100,7 +100,7 @@ local function update_window()
   end
 
   api.nvim_buf_set_lines(buf, 0, -1, false, templates)
-  api.nvim_buf_set_option(buf, 'modifiable', false)
+  api.nvim_set_option_value('modifiable', false, { buf = buf })
 end
 
 local function get_template(template_url)
