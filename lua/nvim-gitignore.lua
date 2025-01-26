@@ -130,7 +130,7 @@ local function select_template()
   local source = template_json:match('"source": "(.-)"')
   local template = string.gsub(source, '\\n', '\n')
 
-  local file = io.open('.gitignore', 'w')
+  local file = io.open('.gitignore', 'a')
 
   if file == nil then
     print('Failed to write .gitignore')
